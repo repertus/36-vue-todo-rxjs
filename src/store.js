@@ -1,3 +1,7 @@
+import axios from 'axios'
+
+const instance = axios.create({baseURL: 'http://localhost:4000/api'})
+
 export default {
     props: 'newTodo',
     state:  {
@@ -9,15 +13,62 @@ export default {
             complete: false
         }
     },
+    actions: {
+        addTask({commit, state}) {
+            instance.post('/todos', state.newTodo)
+                .then((response) => {
+                    commit('addTask', response.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        deleteTask({commit}, todo) {
+            instance.delete('/todos' + '/' + todo._id, todo)
+                .then(() => {
+                    commit('deleteTask', todo)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        getTasks({commit}) {
+            instance.get('/todos')
+                .then((response) => {
+                    console.log(response.data)
+                    commit('getTasks', response.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        updateTask({commit}, todo) {
+            instance.put('todos' + '/' + todo._id, todo)
+                .then((response) => {
+                    // commit('updateTask', response.data)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+    },
     mutations: {
-        addTask(state) {
-          state.todos.push(state.newTodo)
-          state.newTodo = {
-            task: '',
-            type: '',
-            priority: '',
-            complete: false
-          }
+        addTask(state, payload) {
+            state.todos.push(payload.todo)
+            state.newTodo = {
+                task: '',
+                type: '',
+                priority: '',
+                complete: false
+            }
+        },
+        deleteTask(state, todo) {
+            let index = state.todos.indexOf(todo)
+			state.todos.splice(index, 1)
+        },
+        getTasks(state, payload) {
+            console.log(payload.todos)
+            state.todos = payload.todos
         },
         alphaOrder(state) {
             state.todos.sort((last, next) => {

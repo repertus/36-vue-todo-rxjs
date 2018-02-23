@@ -2,12 +2,12 @@
     <div class="task-list">
         <table>
             <tr class="tableHeader">
-                <th v-for="header in headers">{{ header.text }}</th>
+                <th v-for="header in headers" :key="header.text">{{ header.text }}</th>
             </tr>
             <tr v-for="todo in todos" v-bind:class="{danger: todo.priority == 'a_high', warning : todo.priority == 'b_medium', success : todo.priority == 'c_low'}">
                 <td class="btnContainer">
-                    <edit-btn></edit-btn>
-                    <delete-btn></delete-btn>
+                    <edit-btn v-on:click="editTask(todo)"></edit-btn>
+                    <delete-btn v-on:click="deleteTask(todo), console.log('yes')"></delete-btn>
                 </td>
                 <td>{{types[todo.type]}}</td>
                 <td>{{todo.task}}</td>
@@ -53,11 +53,23 @@
                 }
             }
         },
+        mounted() {
+            this.$store.dispatch('getTasks')
+        },
         computed: {
             todos: {
                 get() {
                     return this.$store.state.todos
                 }
+            }
+        },
+        methods: {
+            editTask() {
+
+            },
+            deleteTask() {
+                console.log('fired delete btn')
+                this.$store.dispatch('deleteTask', todo)
             }
         }
     }

@@ -28,9 +28,12 @@
             TodoBtn
         },
         methods: {
-            addTask($event) {
-                this.$store.commit('addTask', $event.target.value)
+            addTask() {
+                this.$store.dispatch('addTask')
             }
+            // addTask($event) {
+            //     this.$store.commit('addTask', $event.target.value)
+            // }
         }
     }
 </script>
