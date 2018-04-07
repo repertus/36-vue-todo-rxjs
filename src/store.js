@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const instance = axios.create({baseURL: 'http://localhost:4000/api'})
+const instance = axios.create({
+    baseURL: 'http://localhost:4000/api'
+})
 
 export default {
     props: 'newTodo',
@@ -24,8 +26,8 @@ export default {
                 })
         },
         deleteTask({commit}, todo) {
-            instance.delete('/todos' + '/' + todo._id, todo)
-                .then(() => {
+            instance.delete('/todos/' + todo._id)
+                .then((response) => {
                     commit('deleteTask', todo)
                 })
                 .catch((error) => {
@@ -43,7 +45,7 @@ export default {
                 })
         },
         updateTask({commit}, todo) {
-            instance.put('todos' + '/' + todo._id, todo)
+            instance.put('todos' + '/' + todo._id)
                 .then((response) => {
                     // commit('updateTask', response.data)
                 })
