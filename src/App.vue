@@ -52,7 +52,7 @@ body {
 
 #app {
   font-family: 'Architects Daughter';
-  position: absolute;
+  position: relative;
   margin: 0 10%;
   width: 80%;
   height: 100%;
@@ -63,7 +63,6 @@ body {
 .container {
   position: relative;
   width: 100%;
-  margin-top: 100px;
   padding-top: 20px;
 }
 

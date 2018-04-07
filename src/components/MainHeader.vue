@@ -17,7 +17,6 @@
 
 <style>
     .mainHeader {
-        position: absolute;
         width: 100%;
         text-align: center;
         height: 100px;
