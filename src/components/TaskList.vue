@@ -4,10 +4,10 @@
             <tr class="tableHeader">
                 <th v-for="header in headers" :key="header.text">{{ header.text }}</th>
             </tr>
-            <tr v-for="todo in todos" v-bind:class="{danger: todo.priority == 'a_high', warning : todo.priority == 'b_medium', success : todo.priority == 'c_low'}">
+            <tr v-for="todo in todos" :key="todo._id" v-bind:class="{'danger': todo.priority == 'a_high', 'warning' : todo.priority == 'b_medium', 'success' : todo.priority == 'c_low'}">
                 <td class="btnContainer">
                     <edit-btn v-on:click="editTask(todo)"></edit-btn>
-                    <delete-btn v-on:click="deleteTask(todo), console.log('yes')"></delete-btn>
+                    <delete-btn v-on:click.native="deleteTask(todo)"></delete-btn>
                 </td>
                 <td>{{types[todo.type]}}</td>
                 <td>{{todo.task}}</td>
@@ -64,11 +64,7 @@
             }
         },
         methods: {
-            editTask() {
-
-            },
-            deleteTask() {
-                console.log('fired delete btn')
+            deleteTask(todo) {
                 this.$store.dispatch('deleteTask', todo)
             }
         }
