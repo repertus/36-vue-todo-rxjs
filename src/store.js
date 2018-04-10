@@ -37,7 +37,6 @@ export default {
         getTasks({commit}) {
             instance.get('/todos')
                 .then((response) => {
-                    console.log(response.data)
                     commit('getTasks', response.data)
                 })
                 .catch((error) => {
@@ -45,9 +44,9 @@ export default {
                 })
         },
         updateTask({commit}, todo) {
-            instance.put('todos' + '/' + todo._id)
+            instance.put('todos' + '/' + todo._id, todo)
                 .then((response) => {
-                    // commit('updateTask', response.data)
+                    commit('updateTask', response.data)
                 })
                 .catch((error) => {
                     console.log(error)
@@ -66,11 +65,10 @@ export default {
         },
         deleteTask(state, todo) {
             let index = state.todos.indexOf(todo)
-			state.todos.splice(index, 1)
+			return state.todos.splice(index, 1)
         },
         getTasks(state, payload) {
-            console.log(payload.todos)
-            state.todos = payload.todos
+            return state.todos = payload.todos
         },
         alphaOrder(state) {
             state.todos.sort((last, next) => {
@@ -94,13 +92,23 @@ export default {
             })
         },
         setTask (state, value) {
-            state.newTodo.task = value
+            return state.newTodo.task = value
         },
         setPriority (state, value) {
-            state.newTodo.priority = value
+            return state.newTodo.priority = value
         },
         setType (state, value) {
-          state.newTodo.type = value
+          return state.newTodo.type = value
+        },
+        updateTask (state, payload) {
+            const index = state.todos.findIndex((todo) => todo._id === payload.todo._id)
+            if (state.todos[index].task !== payload.todo.task) {
+                return state.todos[index].task = payload.todo.task
+            }
+            else if (state.todos[index].comeplete !== payload.todo.complete) {
+                return state.todos[index].comeplete = payload.todo.complete
+            }
+            return null
         }
     },
     getters: {

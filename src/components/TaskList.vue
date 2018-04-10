@@ -6,13 +6,19 @@
             </tr>
             <tr v-for="todo in todos" :key="todo._id" v-bind:class="{'danger': todo.priority == 'a_high', 'warning' : todo.priority == 'b_medium', 'success' : todo.priority == 'c_low'}">
                 <td class="btnContainer">
-                    <edit-btn v-on:click="editTask(todo)"></edit-btn>
-                    <delete-btn v-on:click.native="deleteTask(todo)"></delete-btn>
+                    <div v-if="onEdit == false">
+                        <edit-btn v-on:click.native="onEdit = true"></edit-btn>
+                        <delete-btn v-on:click.native="deleteTask(todo)"></delete-btn> 
+                    </div>
+                    <div v-else>
+                        <save-btn v-on:click.native="editTask(todo), onEdit=false"></save-btn>
+                    </div>
                 </td>
                 <td>{{types[todo.type]}}</td>
-                <td>{{todo.task}}</td>
+                <td v-if="onEdit == false">{{todo.task}}</td>
+                <td v-else><input type="text" v-model="todo.task"></td>
                 <td>
-                    <input type="checkbox" v-model="todo.complete">
+                    <status-checkbox v-on:change="editTask(todo)" v-model="todo.complete"></status-checkbox>
                 </td>
             </tr>
         </table>
@@ -22,12 +28,16 @@
 <script>
     import DeleteBtn from './DeleteBtn'
     import EditBtn from './EditBtn'
+    import SaveBtn from './SaveBtn'
+    import StatusCheckbox from './StatusCheckbox'
 
     export default {
         name: 'task-list',
         components: {
             DeleteBtn,
-            EditBtn
+            EditBtn,
+            SaveBtn,
+            StatusCheckbox
         },
         data: function () {
             return {
@@ -50,7 +60,8 @@
                     2: 'Work',
                     3: 'Personal',
                     4: 'School'
-                }
+                },
+                onEdit: false
             }
         },
         mounted() {
@@ -66,6 +77,9 @@
         methods: {
             deleteTask(todo) {
                 this.$store.dispatch('deleteTask', todo)
+            },
+            editTask(todo) {
+                this.$store.dispatch('updateTask', todo)
             }
         }
     }
@@ -86,7 +100,7 @@
     }
 
     .tableHeader th:nth-child(3) {
-        width: 40%;
+        width: 60%;
     }
 
     .task-list table tr {
@@ -100,6 +114,7 @@
 
     .task-list .btnContainer {
         display: inline-flex;
+        padding: 0 8px;
     }
 
     .danger {

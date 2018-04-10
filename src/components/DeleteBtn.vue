@@ -15,6 +15,9 @@
 </script>
 
 <style>
+    .delete-btn {
+        display: inline-block;
+    }
     .delete-btn button {
         -webkit-appearance: button;
         color: #fff;

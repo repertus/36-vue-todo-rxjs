@@ -1,8 +1,8 @@
 <template>
-    <div class="edit-btn">
+    <div class="save-btn">
         <button type="button">
             <span>
-                <i class="fas fa-pencil-alt"></i>
+                <i class="fas fa-check"></i>
             </span>
         </button>
     </div>
@@ -10,19 +10,19 @@
 
 <script>
     export default {
-        name: 'edit-btn'
+        name: 'save-btn'
     }
 </script>
 
 <style>
-    .edit-btn {
+    .save-btn {
         display: inline-block;
     }
-    .edit-btn button {
+    .save-btn button {
         -webkit-appearance: button;
         color: #fff;
-        background-color: #5cb85c;
-        border-color: #4cae4c;
+        background-color: #337ab7;
+        border-color: #2e6da4;
         display: inline-block;
         padding: 6px 12px;
         margin: 0 3px 0 0;
@@ -44,15 +44,15 @@
         border-radius: 4px;
     }
 
-    .edit-btn button:active:hover,
-    .edit-btn button:active {
+    .save-btn button:active:hover,
+    .save-btn button:active {
         color: #fff;
-        background-color: #398439;
-        border-color: #255625;
+        background-color: #286090;
+        border-color: #204d74;
     }
 
-    .edit-btn button:focus,
-    .edit-btn button:active:focus {
+    .save-btn button:focus,
+    .save-btn button:active:focus {
         outline: 0
     }
 </style>
