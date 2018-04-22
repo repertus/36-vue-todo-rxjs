@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "rxjs": "^5.5.10",
     "vue": "^2.5.11",
+    "vue-rx": "^5.0.0",
     "vuex": "^3.0.1"
   },
   "browserslist": [
@@ -26,6 +28,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
+    "eslint": "^4.19.1",
     "file-loader": "^1.1.4",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
