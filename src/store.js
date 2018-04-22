@@ -1,8 +1,9 @@
-import axios from 'axios'
+import { Observable } from 'rxjs/Observable'
+import "rxjs/add/observable/dom/ajax"
 
-const instance = axios.create({
-    baseURL: 'http://localhost:4000/api'
-})
+console.log('RxJS Observable included?', !!Observable)
+
+const url = 'http://localhost:4000/api/todos/'
 
 export default {
     props: 'newTodo',
@@ -17,45 +18,37 @@ export default {
     },
     actions: {
         addTask({commit, state}) {
-            instance.post('/todos', state.newTodo)
-                .then((response) => {
-                    commit('addTask', response.data)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            Observable.ajax.post(url, state.newTodo, { 'Content-Type': 'application/json' })
+              .subscribe(
+                data => commit('addTask', data.response.todo),
+                error => console.log(error)
+              )
         },
         deleteTask({commit}, todo) {
-            instance.delete('/todos/' + todo._id)
-                .then((response) => {
-                    commit('deleteTask', todo)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            Observable.ajax.delete(url + todo._id)
+              .subscribe(
+                () => commit('deleteTask', todo),
+                error => console.log(error)
+              )
         },
         getTasks({commit}) {
-            instance.get('/todos')
-                .then((response) => {
-                    commit('getTasks', response.data)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+          Observable.ajax.get(url)
+            .subscribe(
+              data => commit('getTasks', data.response.todos),
+              error => console.log(error)
+            )
         },
         updateTask({commit}, todo) {
-            instance.put('todos' + '/' + todo._id, todo)
-                .then((response) => {
-                    commit('updateTask', response.data)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+          Observable.ajax.put(url + todo._id, todo, { 'Content-Type': 'application/json' })
+            .subscribe(
+              data => commit('updateTask', data.response),
+              error => console.log(error)
+            )
         }
     },
     mutations: {
-        addTask(state, payload) {
-            state.todos.push(payload.todo)
+        addTask(state, todo) {
+            state.todos.push(todo)
             state.newTodo = {
                 task: '',
                 type: '',
@@ -65,10 +58,11 @@ export default {
         },
         deleteTask(state, todo) {
             let index = state.todos.indexOf(todo)
-			return state.todos.splice(index, 1)
+			      return state.todos.splice(index, 1)
         },
-        getTasks(state, payload) {
-            return state.todos = payload.todos
+        getTasks(state, todos) {
+            console.log(todos)
+            return state.todos = todos
         },
         alphaOrder(state) {
             state.todos.sort((last, next) => {
